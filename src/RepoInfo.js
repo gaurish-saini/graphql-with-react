@@ -1,4 +1,37 @@
 const RepoInfo = ({ repo }) => {
+  let license;
+  switch (repo.licenseInfo?.spdxId) {
+    case undefined:
+      license = (
+        <span
+          className="p-1 ms-1 d-inline-block btn btn-sm btn-danger"
+          style={{ fontSize: ".6em" }}
+        >
+          NO LICENSE
+        </span>
+      );
+      break;
+    case "NOASSERTION":
+      license = (
+        <span
+          className="p-1 ms-1 d-inline-block btn btn-sm btn-warning"
+          style={{ fontSize: ".6em" }}
+        >
+          {repo.licenseInfo?.spdxId}
+        </span>
+      );
+      break;
+    default:
+      license = (
+        <span
+          className="p-1 ms-1 d-inline-block btn btn-sm btn-outline-success"
+          style={{ fontSize: ".6em" }}
+        >
+          {repo.licenseInfo?.spdxId}
+        </span>
+      );
+  }
+
   return (
     <li className="list-group-item" key={repo.id.toString()}>
       <div className="d-flex justify-content-between align-items-center">
@@ -8,20 +41,25 @@ const RepoInfo = ({ repo }) => {
           </a>
           <p className="small"> {repo.description}</p>
         </div>
-        <span
-          className={
-            "p-1 ms-1 d-inline-block btn btn-sm " +
-            (repo.viewerSubscription === "SUBSCRIBED"
-              ? "btn-success"
-              : "btn-outline-secondary")
-          }
-          style={{ fontSize: "0.6em" }}
-        >
-          {repo.viewerSubscription}
-        </span>
+        <div className="text-nowrap ms-3">
+          {license}
+          <span
+            className={
+              "p-1 ms-1 d-inline-block btn btn-sm " +
+              (repo.viewerSubscription === "SUBSCRIBED"
+                ? "btn-success"
+                : "btn-outline-secondary")
+            }
+            style={{ fontSize: "0.6em" }}
+          >
+            {repo.viewerSubscription}
+          </span>
+        </div>
       </div>
     </li>
   );
 };
 
 export default RepoInfo;
+
+// ?. - optional chaining operator. It essentially converts the value coming in if it's null into an undefined value.
